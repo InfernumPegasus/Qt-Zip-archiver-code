@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>395</height>
+    <width>624</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,6 +23,13 @@
       <widget class="QPushButton" name="chooseFilesButton">
        <property name="text">
         <string>Choose files</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="chooseFilesButtonAlter">
+       <property name="text">
+        <string>Choose files (alter)</string>
        </property>
       </widget>
      </item>

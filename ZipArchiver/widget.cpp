@@ -15,7 +15,7 @@ Widget::~Widget()
     delete ui;
 }
 
-
+// выбор файлов
 void Widget::on_chooseFilesButton_clicked()
 {
     QStringList toArchive = QFileDialog::getOpenFileNames(this, "Choose files", "/", "Files (*.*)");
@@ -25,7 +25,17 @@ void Widget::on_chooseFilesButton_clicked()
     }
 }
 
+// альтернативная версия выбора файлов с использованием пользовательского класса
+void Widget::on_chooseFilesButtonAlter_clicked()
+{
+    ChooseFilesDialog *window = new ChooseFilesDialog(this);
+    window->show();
 
+    // имитация сигнала для добавления файлов
+    connect(window, SIGNAL(mainWindow_ChooseFiles(QStringList&)), this, SLOT(ChooseFiles(QStringList&)));
+}
+
+// создание архива
 void Widget::on_CreateArchiveButton_clicked()
 {
     const int nRows = ui->listWidget->count();
@@ -51,7 +61,7 @@ void Widget::on_CreateArchiveButton_clicked()
     }
 }
 
-
+// распаковка архива
 void Widget::on_unpackButton_clicked()
 {
     QString zip = QFileDialog::getOpenFileName(this, "Zip File", "/", "Zip Files (*.zip)");
@@ -72,7 +82,7 @@ void Widget::on_unpackButton_clicked()
     }
 }
 
-
+// очистка списка файлов для архивации
 void Widget::on_clearButton_clicked()
 {
     if (ui->listWidget->count() < 1)
@@ -83,3 +93,11 @@ void Widget::on_clearButton_clicked()
     ui->listWidget->clear();
 }
 
+// добавление файлов для архивации альтернативным способом
+void Widget::ChooseFiles(QStringList &files)
+{
+    for (auto &item : files)
+    {
+        ui->listWidget->addItem(item);
+    }
+}

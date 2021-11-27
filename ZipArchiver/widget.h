@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "chooseFilesDialog.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class Widget; }
 QT_END_NAMESPACE
@@ -23,7 +25,13 @@ private slots:
 
     void on_clearButton_clicked();
 
-private:
+    // выбор файлов
+    void ChooseFiles(QStringList &files);
+    void on_chooseFilesButtonAlter_clicked();
+
+protected:
     Ui::Widget *ui;
+
+//    QStringList toArchive;
 };
 #endif // WIDGET_H
