@@ -2,6 +2,12 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+VERSION = 1.0.1
+QMAKE_TARGET_COMPANY = Wise man
+QMAKE_TARGET_PRODUCT = Zip Archiver
+QMAKE_TARGET_DESCRIPTION = Simple zip archiver
+QMAKE_TARGET_COPYRIGHT = Vladimir Kirillov
+
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -16,6 +22,8 @@ HEADERS += widget.h \
 
 FORMS += widget.ui \
     chooseFilesDialog.ui
+
+RC_FILE = icon.rc
 
 INCLUDEPATH += "C:/Users/USER/Desktop/ZipFilesLibrary/include"
 
