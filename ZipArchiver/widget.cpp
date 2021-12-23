@@ -18,27 +18,29 @@ Widget::~Widget()
 // выбор файлов
 void Widget::on_chooseFilesButton_clicked()
 {
-    QStringList toArchive = QFileDialog::getOpenFileNames(this, "Choose files", "/", "Files (*.*)");
-    for (auto &item : toArchive)
+    toArchive = QFileDialog::getOpenFileNames(this, "Choose files", "/", "Files (*.*)");
+
+    for (auto &file : toArchive)
     {
-        ui->listWidget->addItem(item);
+        ui->listWidget->addItem(file);
     }
 }
 
 // альтернативная версия выбора файлов с использованием пользовательского класса
 void Widget::on_chooseFilesButtonAlter_clicked()
 {
-    ChooseFilesDialog *window = new ChooseFilesDialog(this);
-    window->show();
+    chooseFileDialog = new ChooseFilesDialog(this);
+    chooseFileDialog->show();
 
     // имитация сигнала для добавления файлов
-    connect(window, SIGNAL(mainWindow_ChooseFiles(QStringList&)), this, SLOT(ChooseFiles(QStringList&)));
+    connect(chooseFileDialog, SIGNAL(mainWindow_ChooseFiles(QStringList&)), this, SLOT(copyFiles(QStringList&)));
 }
 
 // создание архива
 void Widget::on_CreateArchiveButton_clicked()
 {
-    const int nRows = ui->listWidget->count();
+    toArchive.removeDuplicates();
+    const int nRows = toArchive.count();
     if (nRows < 1)
     {
         QMessageBox::critical(this, "Archive", "Choose files first!");
@@ -46,14 +48,8 @@ void Widget::on_CreateArchiveButton_clicked()
     }
 
     QString zipArchive = QFileDialog::getSaveFileName(this, "Create archive", "/", "Zip Files (*.zip)");
-    QStringList files;
 
-    for (int row = 0; row < nRows; row++)
-    {
-        files.append(ui->listWidget->item(row)->text());
-    }
-
-    if (JlCompress::compressFiles(zipArchive, files))
+    if (JlCompress::compressFiles(zipArchive, toArchive))
     {
         QMessageBox::information(this, "Archive", "Archive created!");
     } else {
@@ -76,7 +72,7 @@ void Widget::on_unpackButton_clicked()
 
     if (!JlCompress::extractFiles(zip, zipped, folder).isEmpty())
     {
-            QMessageBox::information(this, "Unpack", "Unpacked!");
+        QMessageBox::information(this, "Unpack", "Unpacked!");
     } else {
         QMessageBox::critical(this, "Unpack", "Error while unpacking!");
     }
@@ -85,19 +81,21 @@ void Widget::on_unpackButton_clicked()
 // очистка списка файлов для архивации
 void Widget::on_clearButton_clicked()
 {
-    if (ui->listWidget->count() < 1)
+    if (ui->listWidget->count() < 1 || toArchive.count() < 1)
     {
         QMessageBox::critical(this, "Clear", "No files to clear!");
         return;
     }
     ui->listWidget->clear();
+    toArchive.clear();
 }
 
 // добавление файлов для архивации альтернативным способом
-void Widget::ChooseFiles(QStringList &files)
+void Widget::copyFiles(QStringList &files)
 {
     for (auto &item : files)
     {
+        toArchive.push_back(item);
         ui->listWidget->addItem(item);
     }
 }

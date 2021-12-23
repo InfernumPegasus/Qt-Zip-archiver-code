@@ -26,12 +26,13 @@ private slots:
     void on_clearButton_clicked();
 
     // выбор файлов
-    void ChooseFiles(QStringList &files);
+    void copyFiles(QStringList &files);
     void on_chooseFilesButtonAlter_clicked();
 
 protected:
     Ui::Widget *ui;
+    ChooseFilesDialog *chooseFileDialog;
 
-//    QStringList toArchive;
+    QStringList toArchive;
 };
 #endif // WIDGET_H

@@ -24,8 +24,6 @@ ChooseFilesDialog::~ChooseFilesDialog()
 // переход по папкам и выбор файла
 void ChooseFilesDialog::on_listView_doubleClicked(const QModelIndex &index)
 {
-    // TODO сделать так чтобы открывалось только одно окно
-
     QListView *listView = (QListView*)sender();
     QFileInfo fileInfo = fileSystemModel -> fileInfo(index);
 
